@@ -143,6 +143,7 @@ h4 {
 .btn-primary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: .5rem;
   padding: .75rem 1.8rem;
   background: var(--accent);
@@ -166,6 +167,7 @@ h4 {
 .btn-ghost {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: .5rem;
   padding: .75rem 1.8rem;
   background: transparent;
@@ -757,6 +759,9 @@ h4 {
   transition: border-color .2s, transform .2s;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .skill-card:hover {
@@ -792,6 +797,9 @@ h4 {
   font-size: 1rem;
   font-weight: 600;
   color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .skill-pct {
@@ -970,6 +978,110 @@ h4 {
   border-top: 1px solid var(--border);
 }
 
+.password-modal {
+  max-width: 400px;
+}
+
+.password-modal .modal-body {
+  padding: 2rem 1.8rem;
+  text-align: center;
+}
+
+.password-desc {
+  color: var(--text-dim);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.password-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.password-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.error-popup {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--surface2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 3000;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  visibility: hidden;
+}
+
+.error-icon {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.error-text {
+  color: #f87171;
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.success-popup {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--surface2);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 3000;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  visibility: hidden;
+}
+
+.success-icon {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.success-text {
+  color: #22c55e;
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
 /* ─── MARQUEE ─── */
 .tech-marquee {
   overflow: hidden;
@@ -1093,6 +1205,11 @@ h4 {
   margin-bottom: .6rem;
 }
 
+.project-body .project-stack {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
 .project-desc {
   color: var(--text-dim);
   font-size: .92rem;
@@ -1128,6 +1245,7 @@ h4 {
 
 .project-links {
   display: flex;
+  align-items: center;
   gap: .75rem;
   flex-wrap: wrap;
   margin-top: auto;
@@ -1208,6 +1326,36 @@ h4 {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+}
+
+.form-header {
+  margin-bottom: 0.5rem;
+}
+
+.form-header h3 {
+  font-size: 1.5rem;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+}
+
+.form-header p {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.btn-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .form-group {
@@ -1337,6 +1485,11 @@ h4 {
 
   .contact-grid {
     grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 1.2rem;
   }
 
   .project-featured {

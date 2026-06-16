@@ -227,7 +227,38 @@ saveSkillsBtn.addEventListener("click", () => {
     { background: "", borderColor: "", duration: 1.2, ease: "power2.out" });
 });
 
-editSkillsBtn.addEventListener("click", openModal);
+const passwordModal = document.getElementById("passwordModal");
+const passModalClose = document.getElementById("passModalClose");
+const verifyPassBtn = document.getElementById("verifyPassBtn");
+const adminPassword = document.getElementById("adminPassword");
+const errorPopup = document.getElementById("errorPopup");
+
+function openPasswordModal() {
+  adminPassword.value = "";
+  passwordModal.classList.add("open");
+}
+
+function closePasswordModal() {
+  passwordModal.classList.remove("open");
+}
+
+passModalClose.addEventListener("click", closePasswordModal);
+passwordModal.addEventListener("click", e => { if (e.target === passwordModal) closePasswordModal(); });
+
+verifyPassBtn.addEventListener("click", () => {
+  if (adminPassword.value === "6307") {
+    closePasswordModal();
+    openModal();
+  } else {
+    // Show error popup
+    gsap.killTweensOf(errorPopup);
+    gsap.set(errorPopup, { autoAlpha: 1, x: 50 });
+    gsap.to(errorPopup, { x: 0, duration: 0.4, ease: "power3.out" });
+    gsap.to(errorPopup, { autoAlpha: 0, x: 20, duration: 0.4, delay: 2.5, ease: "power3.in" });
+  }
+});
+
+editSkillsBtn.addEventListener("click", openPasswordModal);
 modalClose.addEventListener("click", closeModal);
 skillModal.addEventListener("click", e => { if (e.target === skillModal) closeModal(); });
 
@@ -270,39 +301,53 @@ gsap.to(".orb-2", {
   y: -80, x: -30
 });
 
-// ─── CONTACT FORM ───
-document.getElementById("sendBtn").addEventListener("click", () => {
-  const name = document.getElementById("formName").value.trim();
-  const email = document.getElementById("formEmail").value.trim();
-  const msg = document.getElementById("formMsg").value.trim();
-  const note = document.getElementById("formNote");
+// ─── CONTACT FORM AJAX ───
+const contactForm = document.getElementById("contactForm");
+const successPopup = document.getElementById("successPopup");
 
-  if (!name || !email || !msg) {
-    note.textContent = "Please fill in all fields.";
-    note.style.color = "#f87171";
-    return;
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    note.textContent = "Please enter a valid email.";
-    note.style.color = "#f87171";
-    return;
-  }
+if (contactForm) {
+  contactForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const btn = contactForm.querySelector('.btn-submit');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = "Sending...";
+    btn.disabled = true;
 
-  // Simulate send
-  const btn = document.getElementById("sendBtn");
-  btn.textContent = "Sending…";
-  btn.disabled = true;
-  setTimeout(() => {
-    note.textContent = "✓ Message sent! I'll get back to you soon.";
-    note.style.color = "#22c55e";
-    btn.textContent = "Send Message →";
-    btn.disabled = false;
-    document.getElementById("formName").value = "";
-    document.getElementById("formEmail").value = "";
-    document.getElementById("formMsg").value = "";
-    gsap.from(note, { opacity: 0, y: 8, duration: .4 });
-  }, 1200);
-});
+    fetch(contactForm.action, {
+      method: 'POST',
+      body: new FormData(contactForm),
+      headers: { 'Accept': 'application/json' }
+    }).then(response => {
+      if (response.ok) {
+        contactForm.reset();
+        gsap.killTweensOf(successPopup);
+        gsap.set(successPopup, { autoAlpha: 1, x: 50 });
+        gsap.to(successPopup, { x: 0, duration: 0.4, ease: "power3.out" });
+        gsap.to(successPopup, { autoAlpha: 0, x: 20, duration: 0.4, delay: 3, ease: "power3.in" });
+      } else {
+        showError("Oops! Failed to send.");
+      }
+    }).catch(error => {
+      showError("Oops! Network error.");
+    }).finally(() => {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    });
+  });
+}
+
+function showError(msg) {
+  if (!errorPopup) return;
+  const errText = errorPopup.querySelector('.error-text');
+  const originalMsg = errText.textContent;
+  errText.textContent = msg;
+  gsap.killTweensOf(errorPopup);
+  gsap.set(errorPopup, { autoAlpha: 1, x: 50 });
+  gsap.to(errorPopup, { x: 0, duration: 0.4, ease: "power3.out" });
+  gsap.to(errorPopup, { autoAlpha: 0, x: 20, duration: 0.4, delay: 3, ease: "power3.in", onComplete: () => {
+    errText.textContent = originalMsg;
+  }});
+}
 
 // ─── ACTIVE NAV LINK HIGHLIGHT ───
 const sections = document.querySelectorAll("section[id]");
